@@ -1,23 +1,24 @@
 
-import {useFormik, FormikProps} from "formik";
+import { useRef } from 'react';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
-export type formikControllerProps = {
-    control: string,
-    name: string,
-    label: string | null,
+import { FormikProps} from "formik";
+import { elementType } from "./typesForm";
+
+type formikControllerProps = {
     formik: FormikProps<any>
+    element: elementType
 }
 
 const FormikController = (props: formikControllerProps) =>{
 
-    const { control, formik, name, label } = props;
+    const { element, formik } = props;
+    const { control, name, label, required, initialValue, type, min, max, lines } = element;
+
     switch (control) {
 
         case "input":
-            return <p>input</p>
-
-        case "textfield":
             return (
                 <TextField
                     margin="normal"
@@ -25,12 +26,15 @@ const FormikController = (props: formikControllerProps) =>{
                     id={ name }
                     name={ name }
                     label={ label ?? name }
-                    value={ formik.values.statement }
+                    value={ formik.values[name] }
                     onChange={ formik.handleChange }
-                    error={ formik.touched.statement && Boolean(formik.errors.statement )}
-                    // helperText={formik.touched.statement formik.errors.statement}
+                    error={ formik.touched[name] && Boolean(formik.errors[name] )}
+                    helperText={ formik.touched[name] && `${formik.errors[name] ?? ""}` }
+                    multiline={ lines ? true : false }
+                    rows={ lines ?? 1 }
                 />
             )
+
 
         case "textarea":
             return <p>textarea</p>
