@@ -46,6 +46,14 @@ const CrearPreguntaVerdadReto: NextPageWithLayout = () => {
           label="Pregunta"
         />
 
+        <FormikController
+          control="textfield"
+          formik={formik}
+          name="statement"
+          label="Pregunta"
+        />
+
+
         {(error !== "") &&
           <Alert severity="error">{error}</Alert>
         }
