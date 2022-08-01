@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../../lib/dbConnect';
-import Question from '../../../../models/verdad-o-reto/Question';
+import TrueOrDareQuestions from '../../../../models/verdad-o-reto/TrueOrDareQuestions';
 
 type Data = {
   success: boolean;
   message: string;
-  data: typeof Question[] | null;
+  data: typeof TrueOrDareQuestions[] | null;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'GET':
       try {
-        const questions = await Question.find({}) /* find all the data in our database */
+        const questions = await TrueOrDareQuestions.find({}) /* find all the data in our database */
         res.status(200).json({ 
           success: true, 
           data: questions,
@@ -38,17 +38,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'POST':
       try {
-
-		console.log(req.body)
+        const question = new TrueOrDareQuestions(req.body);
+        await question.save();
 
         res.status(201).json({ 
           success: true, 
           message: 'Successfully created a new question.',
-					data: null
-          // data: question 
+					data: question
         });
 
       } catch (error) {
+        console.log(error)
         res.status(400).json({ 
           success: false,
           message: 'Error creating a new question.',

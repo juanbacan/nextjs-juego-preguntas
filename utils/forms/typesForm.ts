@@ -16,4 +16,6 @@ export type elementType = {
     min?: number,
     max?: number,
     lines?: number,
+
+    items?: Array<{ value: string, label: string }>,
   }

@@ -58,6 +58,7 @@ import { initConfig } from './configTinyMCE';
 type formBaseProps = {
     elementsForm: elementType[],
     onSubmit: (values: any) => void,
+    buttonText?: string,
 }
 
 const FormBase = ( props: formBaseProps )=> {
@@ -110,7 +111,7 @@ const FormBase = ( props: formBaseProps )=> {
 
     for (const element of elementsForm) {
         if (element.control != "editor") {
-            initialValues[element.name] = element.initialValue
+            initialValues[element.name] = element.initialValue ?? ""
         }
     }
 
@@ -122,9 +123,10 @@ const FormBase = ( props: formBaseProps )=> {
         onSubmit: async (values) => {
             try {
                 await onSubmit(values);
-            } catch (error) {
+                formik.resetForm();
+            } catch (error: any) {
                 console.log(error);
-                setError("Usuario no encontrado");
+                setError(error?.message);
             }
         },
     });
@@ -144,20 +146,22 @@ const FormBase = ( props: formBaseProps )=> {
                         />
                     </Box>
                 ) : (
-                    <FormikController
-                        formik={ formik }
-                        element={ element }
-                    />
+                    <Box sx={{ my: 1 }}>
+                        <FormikController
+                            formik={ formik }
+                            element={ element }
+                        />
+                    </Box>
                 )}
             </div>
         ))}
 
         {(error !== "") &&
-          <Alert severity="error">{error}</Alert>
+            <Alert severity="error">{error}</Alert>
         }
 
         <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: 3, mb: 2 }}>
-          Ingresar
+            {props.buttonText ?? "Enviar"}
         </Button>
       </Box>
     )

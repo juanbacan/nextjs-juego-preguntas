@@ -1,4 +1,4 @@
-import { ReactElement, useRef } from 'react'
+import { ReactElement } from 'react'
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -23,22 +23,24 @@ const CrearPreguntaVerdadReto: NextPageWithLayout = () => {
       label: 'Enunciado de la Pregunta',
       errorMessage: "El enunciado de la pregunta es requerido",
       required: true,
-      initialValue: 'escriba el enunciado',
-      type: 'text', 
-      min: 8,
-      max: 100
-    },  
-    {
-      control: 'input',
-      name: 'answer',
-      label: 'Enunciado de la Pregunta',
-      errorMessage: "La respuesta de la pregunta es requerido",
-      required: true,
-      initialValue: 'Escriba el enunciado de la palabra',
       type: 'text', 
       min: 8,
       max: 100,
-      lines: 3
+      lines: 2,
+    },  
+    {
+      control: 'select',
+      name: 'type',
+      label: 'Tipo de la Pregunta',
+      errorMessage: "El tipo de la pregunta es requerido",
+      initialValue: 'reto',
+      required: true,
+      type: 'text',
+      min: 2,
+      items: [
+        {value: 'verdad', label: 'Verdad'},
+        {value: 'reto', label: 'Reto'}
+      ]
     },
   ]
 
@@ -49,40 +51,22 @@ const CrearPreguntaVerdadReto: NextPageWithLayout = () => {
         Crear Pregunta Verdad o Reto
       </Typography>
 
-<<<<<<< HEAD
-      <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
-        <FormikController
-          control="textfield"
-          formik={formik}
-          name="statement"
-          label="Pregunta"
-        />
-
-        <FormikController
-          control="textfield"
-          formik={formik}
-          name="statement"
-          label="Pregunta"
-        />
-
-
-        {(error !== "") &&
-          <Alert severity="error">{error}</Alert>
-        }
-
-        <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: 3, mb: 2 }}>
-          Ingresar
-        </Button>
-      </Box>
-
-=======
       <FormBase
         elementsForm={elementsForm}
+        buttonText="Crear Pregunta"
         onSubmit={ async (values) => {
           console.log(values);
+          const res = await fetch("/api/questions/verdad-o-reto", {
+            method: "post",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values),
+          });
+          await res.json();
         }}
       />
->>>>>>> 2b0c460988923d1855333dc9784e2456bdc232a0
     </Container>
   );
 }

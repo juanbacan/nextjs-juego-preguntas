@@ -1,6 +1,11 @@
 
-import { useRef } from 'react';
 import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+
 import Box from '@mui/material/Box';
 
 import { FormikProps} from "formik";
@@ -14,7 +19,7 @@ type formikControllerProps = {
 const FormikController = (props: formikControllerProps) =>{
 
     const { element, formik } = props;
-    const { control, name, label, required, initialValue, type, min, max, lines } = element;
+    const { control, name, label, required, initialValue, type, min, max, lines, items } = element;
 
     switch (control) {
 
@@ -34,7 +39,34 @@ const FormikController = (props: formikControllerProps) =>{
                     rows={ lines ?? 1 }
                 />
             )
+        
+        case "select":
+            return (
+                <FormControl fullWidth error={ formik.touched[name] && Boolean(formik.errors[name]) }>
+                    <InputLabel id={ `label${name}` }>{ label ?? name }</InputLabel>
+                    <Select
+                        labelId={ `label${name}` }
+                        id={ name }
+                        name={ name }
+                        label={ label ?? name }
+                        value={ formik.values[name] }
+                        onChange={formik.handleChange}
+                        error={ formik.touched[name] && Boolean(formik.errors[name] )}
+                    >
+              
+                        { (items && items.length > 0) && items.map((item: any, index: number) => {
+                            return (
+                                <MenuItem key={ index } value={ item.value }>{ item.label }</MenuItem>
+                            ) 
+                        })}
+               
 
+                    </Select>
+                    { formik.touched[name] && (
+                        <FormHelperText>{`${formik.errors[name] ?? ""}`}</FormHelperText>
+                    ) }
+                </FormControl>
+            )
 
         case "textarea":
             return <p>textarea</p>
