@@ -6,8 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 
-import Box from '@mui/material/Box';
-
 import { FormikProps} from "formik";
 import { elementType } from "./typesForm";
 
@@ -42,7 +40,7 @@ const FormikController = (props: formikControllerProps) =>{
         
         case "select":
             return (
-                <FormControl fullWidth error={ formik.touched[name] && Boolean(formik.errors[name]) }>
+                <FormControl sx={{ mt: 2.5 }} fullWidth error={ formik.touched[name] && Boolean(formik.errors[name]) }>
                     <InputLabel id={ `label${name}` }>{ label ?? name }</InputLabel>
                     <Select
                         labelId={ `label${name}` }

@@ -10,6 +10,7 @@ import { NextPageWithLayout } from './_app';
 import LayoutMain from '../layouts/main/LayoutMain';
 
 const Home: NextPageWithLayout = () => {
+  
   return (
     <Container maxWidth="lg">
       <Box

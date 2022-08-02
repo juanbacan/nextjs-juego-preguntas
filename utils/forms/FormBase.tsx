@@ -132,7 +132,7 @@ const FormBase = ( props: formBaseProps )=> {
     });
 
     return(
-    <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+    <Box component="form" onSubmit={formik.handleSubmit}>
         { elementsForm.map((element, index) => (
             <div key={ index }>
                 { element.control === "editor" ? (
@@ -146,7 +146,7 @@ const FormBase = ( props: formBaseProps )=> {
                         />
                     </Box>
                 ) : (
-                    <Box sx={{ my: 1 }}>
+                    <Box>
                         <FormikController
                             formik={ formik }
                             element={ element }
@@ -160,10 +160,10 @@ const FormBase = ( props: formBaseProps )=> {
             <Alert severity="error">{error}</Alert>
         }
 
-        <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: 3, mb: 2 }}>
+        {/* <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: 3, mb: 2 }}>
             {props.buttonText ?? "Enviar"}
-        </Button>
-      </Box>
+        </Button> */}
+    </Box>
     )
 }
 
