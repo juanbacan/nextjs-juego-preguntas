@@ -2,7 +2,6 @@ import { ReactElement } from 'react'
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';

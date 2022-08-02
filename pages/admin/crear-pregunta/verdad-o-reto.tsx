@@ -14,8 +14,6 @@ import { elementType } from '../../../utils/forms/typesForm';
 
 const CrearPreguntaVerdadReto: NextPageWithLayout = () => {
 
-	// const editorRef1 = useRef<TinyMCEEditor | null>(null);
-
   const elementsForm: elementType[] = [
     {
       control: 'input',
@@ -55,7 +53,6 @@ const CrearPreguntaVerdadReto: NextPageWithLayout = () => {
         elementsForm={elementsForm}
         buttonText="Crear Pregunta"
         onSubmit={ async (values) => {
-          console.log(values);
           const res = await fetch("/api/questions/verdad-o-reto", {
             method: "post",
             headers: {
