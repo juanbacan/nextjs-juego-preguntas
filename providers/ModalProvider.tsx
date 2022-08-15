@@ -1,69 +1,30 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react'
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import React, { useCallback, useState, useContext } from 'react'
+
+import dynamic from 'next/dynamic'
+const Modal = dynamic(() => import('./Modal'), {
+  ssr: false,
+})
+// import Modal from './Modal';
 
 type ModalContextType = {
-    // unSetModal: () => void,
-    setModal: (modal: UseModalProviderProps) => void
+    unSetModal: () => void,
+    setModal: (modal: {
+        title?: string,
+        subtitle?: string,
+        children: React.ReactElement,
+        onSubmit?: () => void,
+    }) => void
+    
 }
 
 // Create a React context
 const ModalContext = React.createContext<ModalContextType | null>(null);
 
-type modalPropTypes = {
-    modal: UseModalProviderProps,
-    unSetModal: () => void,
-}
-
-
-//Declare the modal component
-const Modal = ({ modal, unSetModal }: modalPropTypes) => {
-    useEffect(() => {
-        const bind = (e: any) => {
-            if (e.keyCode !== 27) return;
-            if (document.activeElement && ['INPUT', 'SELECT'].includes(document.activeElement.tagName)) return;
-            unSetModal();
-        }
-
-        document.addEventListener('keyup', bind)
-
-        return () => document.removeEventListener('keyup', bind)
-    }, [modal, unSetModal])
-
-    return (
-        <Dialog
-            open={true}
-            fullWidth
-            maxWidth='md'
-            aria-labelledby='max-width-dialog-title'
-        >
-            <DialogTitle id='max-width-dialog-title' sx={{ pb: 0 }}>
-                { modal.title ?? 'Formulario' }
-            </DialogTitle>
-            <DialogContent>
-                { modal.subtitle && <DialogContentText>{ modal.subtitle }</DialogContentText> }
-                { modal.children }
-            </DialogContent>
-            <DialogActions>
-                <Button color="error" variant="contained" onClick={unSetModal}>Close</Button>
-                <Button 
-                    color='primary' 
-                    variant="contained" 
-                    onClick={ async () => {
-                        await modal.onSubmit();
-                    }}
-                >
-                    Save
-                </Button>
-            </DialogActions>
-        </Dialog>
-    )
-}
-
-type UseModalProviderProps = {
+export type UseModalProviderProps = {
     title?: string,
     subtitle?: string,
     children: React.ReactElement,
-    onSubmit: () => void,
+    onSubmit?: () => void,
 }
 
 const ModalProvider = (props: any) => {
@@ -75,8 +36,8 @@ const ModalProvider = (props: any) => {
     }, [setModal])
 
     return (
-        // <ModalContext.Provider value={{ setModal, unSetModal }} {...props} >
-        <ModalContext.Provider value={{ setModal }} {...props} >
+        <ModalContext.Provider value={{ setModal, unSetModal }} {...props} >
+        {/* <ModalContext.Provider value={{ setModal }} {...props} > */}
             {props.children}
             {modal && <Modal modal={modal} unSetModal={unSetModal} />}
         </ModalContext.Provider>
@@ -84,7 +45,7 @@ const ModalProvider = (props: any) => {
 }
 
 // useModal: shows and hides the Modal
-const useModal = (): ModalContextType => {
+export const useModal = (): ModalContextType => {
     const context = useContext(ModalContext)
     if (context === undefined) {
         throw new Error('useModal must be used within a UseModalProvider')
@@ -92,4 +53,4 @@ const useModal = (): ModalContextType => {
     return context!
 }
 
-export { ModalProvider, useModal }
+export default ModalProvider;

@@ -7,10 +7,17 @@ import ProTip from '../src/ProTip';
 import Copyright from '../src/Copyright';
 
 import { NextPageWithLayout } from './_app';
+
+import { signIn, signOut, useSession } from "next-auth/react"
+
 import LayoutMain from '../layouts/main/LayoutMain';
 
 const Home: NextPageWithLayout = () => {
   
+  const { data: session, status } = useSession();
+  console.log(session);
+  console.log(status)
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -22,6 +29,26 @@ const Home: NextPageWithLayout = () => {
           alignItems: 'center',
         }}
       >
+        { !session ? (
+          <a
+            onClick={(e) => {
+              e.preventDefault()
+              signIn()
+            }}
+          >
+            Sign in
+          </a>
+        ):(
+          <a
+            onClick={(e) => {
+              e.preventDefault()
+              signOut()
+            }}
+          >
+            Sign out
+          </a>
+        )}
+
         <Typography variant="h4" component="h1" gutterBottom>
           MUI v5 + Next.js with TypeScript example
         </Typography>

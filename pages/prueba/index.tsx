@@ -9,7 +9,6 @@ import { useModal } from '../../providers/ModalProvider';
 import { Button } from '@mui/material';
 import { elementType } from '../../utils/forms/typesForm';
 
-
 // import FormBase from '../../utils/forms/FormBase';
 import dynamic from 'next/dynamic'
 const FormBase = dynamic(() => import('../../utils/forms/FormBase'), {
@@ -18,7 +17,7 @@ const FormBase = dynamic(() => import('../../utils/forms/FormBase'), {
 
 const Prueba: NextPageWithLayout = () => {
 
-	const { setModal } = useModal();
+	const { setModal, unSetModal } = useModal();
 
   const elementsForm: elementType[] = [
     { control: 'input', name: 'statement3', label: 'Enunciado de la Pregunta 2',
@@ -48,11 +47,11 @@ const Prueba: NextPageWithLayout = () => {
           onSubmit={ async (values) => {
             console.log(values);
           }}
+          onCancel={ () => {
+            unSetModal();
+          } }
         />
       ),
-      onSubmit: async () => {
-        console.log('submit');
-      }
     })
   }
 
@@ -62,7 +61,7 @@ const Prueba: NextPageWithLayout = () => {
         Pruebas
       </Typography>
 			<Button variant="contained" onClick={ renderForm } >
-				{'Cancel'}
+				Abrir Formulario
 			</Button>
     </Container>
   );

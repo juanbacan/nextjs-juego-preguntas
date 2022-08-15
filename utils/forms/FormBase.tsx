@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import FormikController from "./FormikController";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 
@@ -55,13 +56,13 @@ import { initConfig } from './configTinyMCE';
 // 		}
 //   ]
 
-type formBaseProps = {
-    elementsForm: elementType[],
-    onSubmit: (values: any) => void,
-    buttonText?: string,
-}
-
-const FormBase = ( props: formBaseProps )=> {
+const FormBase = ( props: 
+    {
+        elementsForm: elementType[],
+        onSubmit: (values: any) => void,
+        onCancel?: () => void,
+        buttonText?: string,
+    } )=> {
 
     const {elementsForm, onSubmit } = props;
 
@@ -132,38 +133,45 @@ const FormBase = ( props: formBaseProps )=> {
     });
 
     return(
-    <Box component="form" onSubmit={formik.handleSubmit}>
-        { elementsForm.map((element, index) => (
-            <div key={ index }>
-                { element.control === "editor" ? (
-                    <Box sx={{ my: 3 }}>
-                        <Editor
-                            id={element.name}
-                            apiKey="hplh3uy8maqtyozi4s4hdhcvfa9mt9h5sr7pw40tu2m493ir"
-                            onInit={(evt, editor) => element.editorRef ? element.editorRef.current = editor : null}
-                            initialValue={ element.initialValue ? element.initialValue.toString() : undefined }
-                            init={initConfig}
-                        />
-                    </Box>
-                ) : (
-                    <Box>
-                        <FormikController
-                            formik={ formik }
-                            element={ element }
-                        />
-                    </Box>
+        <Box component="form" onSubmit={formik.handleSubmit}>
+            { elementsForm.map((element, index) => (
+                <div key={ index }>
+                    { element.control === "editor" ? (
+                        <Box sx={{ my: 3 }}>
+                            <Editor
+                                id={element.name}
+                                apiKey="hplh3uy8maqtyozi4s4hdhcvfa9mt9h5sr7pw40tu2m493ir"
+                                onInit={(evt, editor) => element.editorRef ? element.editorRef.current = editor : null}
+                                initialValue={ element.initialValue ? element.initialValue.toString() : undefined }
+                                init={initConfig}
+                            />
+                        </Box>
+                    ) : (
+                        <Box>
+                            <FormikController
+                                formik={ formik }
+                                element={ element }
+                            />
+                        </Box>
+                    )}
+                </div>
+            ))}
+
+            {(error !== "") &&
+                <Alert severity="error">{error}</Alert>
+            }
+
+            <Stack direction="row" spacing={ 1 } mt={ 3 } justifyContent="flex-end">
+                {props.onCancel && (
+                    <Button color="error" variant="contained" type="button" onClick={props.onCancel}>
+                        Cancelar
+                    </Button>
                 )}
-            </div>
-        ))}
-
-        {(error !== "") &&
-            <Alert severity="error">{error}</Alert>
-        }
-
-        {/* <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: 3, mb: 2 }}>
-            {props.buttonText ?? "Enviar"}
-        </Button> */}
-    </Box>
+                <Button color="primary" variant="contained" type="submit">
+                    {props.buttonText ?? "Enviar"}
+                </Button>
+            </Stack>
+        </Box>
     )
 }
 

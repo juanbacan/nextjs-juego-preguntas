@@ -35,6 +35,7 @@ const FormikController = (props: formikControllerProps) =>{
                     helperText={ formik.touched[name] && `${formik.errors[name] ?? ""}` }
                     multiline={ lines ? true : false }
                     rows={ lines ?? 1 }
+                    size="small"
                 />
             )
         
@@ -50,6 +51,7 @@ const FormikController = (props: formikControllerProps) =>{
                         value={ formik.values[name] }
                         onChange={formik.handleChange}
                         error={ formik.touched[name] && Boolean(formik.errors[name] )}
+                        size="small"
                     >
               
                         { (items && items.length > 0) && items.map((item: any, index: number) => {

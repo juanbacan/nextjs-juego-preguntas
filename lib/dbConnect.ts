@@ -1,3 +1,4 @@
+import { MongoClient } from 'mongodb'
 import mongoose from 'mongoose'
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/poddy'
@@ -19,7 +20,7 @@ if (!cached) {
   cached = (global as any).mongoose = { conn: null, promise: null }
 }
 
-async function dbConnect() {
+async function dbConnect(): Promise<MongoClient> {
   if (cached.conn) {
     return cached.conn
   }
