@@ -7,60 +7,35 @@ import { NextPageWithLayout } from '../_app';
 import LayoutMain from '../../layouts/main/LayoutMain';
 import { useModal } from '../../providers/ModalProvider';
 import { Button } from '@mui/material';
-import { elementType } from '../../utils/forms/typesForm';
 
 // import FormBase from '../../utils/forms/FormBase';
 import dynamic from 'next/dynamic'
+import { elementsForm } from '../../forms/prueba';
+
 const FormBase = dynamic(() => import('../../utils/forms/FormBase'), {
   ssr: false,
-})
+});
 
 const Prueba: NextPageWithLayout = () => {
 
 	const { setModal, unSetModal } = useModal();
 
-  const elementsForm: elementType[] = [
-    { control: 'input', name: 'statement3', label: 'Enunciado de la Pregunta 2',
-      errorMessage: "El enunciado de la pregunta es requerido 2", required: true,
-      type: 'text', min: 8, max: 100
-    }, 
-    {
-      control: 'input', name: 'statement4', label: 'Enunciado de la Pregunta 3',
-      errorMessage: "El enunciado de la pregunta es requerido", required: true,
-      type: 'text', min: 8, max: 100
-    },  
-    {
-      control: 'select', name: 'type2', label: 'Tipo de la Pregunta 2',
-      errorMessage: "El tipo de la pregunta es requerido", initialValue: 'reto',
-      required: true, type: 'text', min: 2,
-      items: [ {value: 'verdad', label: 'Verdad'}, {value: 'reto', label: 'Reto'}]
-    },
-  ]
-
-  const renderForm = () => {
-    setModal({
-      title: 'Formulario',
-      children: (
-        <FormBase
-          elementsForm={ elementsForm }
-          buttonText="Crear Pregunta"
-          onSubmit={ async (values) => {
-            console.log(values);
-          }}
-          onCancel={ () => {
-            unSetModal();
-          } }
-        />
-      ),
-    })
-  }
+  const form = <FormBase
+      elementsForm={ elementsForm }
+      buttonText="Crear Pregunta"
+      onSubmit={ async (values) => {
+        console.log(values);
+        console.log("Formulario enviado");
+      }}
+      onCancel={ () => unSetModal() }
+    />
 
   return (
     <Container sx={{ mt: 2 }} maxWidth="sm">
       <Typography variant="h4" component="h1" gutterBottom align="center">
         Pruebas
       </Typography>
-			<Button variant="contained" onClick={ renderForm } >
+			<Button variant="contained" onClick={ () => setModal({ title: 'Formulario', children: form }) } >
 				Abrir Formulario
 			</Button>
     </Container>
